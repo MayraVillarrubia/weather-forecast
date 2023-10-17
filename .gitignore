@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Config
+twilio_config.py
+
+
 # C extensions
 *.so
 
