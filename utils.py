@@ -1,6 +1,6 @@
 import pandas as pd
 from twilio.rest import Client
-from twilio_config import TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, PHONE_NUMBER, API_KEY_WAPI, PHONE_NUMBER_TO
+from twilio_config import TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, PHONE_NUMBER, API_KEY_WAPI, PHONE_NUMBER_TO, CITY
 from datetime import datetime
 from tqdm import tqdm
 import requests
@@ -31,9 +31,9 @@ def create_df(data):
     return df_rain if (not df_rain.empty) else 'There is no rain today! Enjoy your day!'
 
 
-def get_forecast(place = 'La Plata'):
+def get_forecast():
     data = []
-    response = request_wapi(API_KEY_WAPI, place)
+    response = request_wapi(API_KEY_WAPI, CITY)
 
     for i in tqdm(range(len(response['forecast']['forecastday'][0]['hour'])), colour = 'green'):
         
@@ -51,12 +51,12 @@ def fill_data(response, i):
     return date,hour,condition,tempe,rain,prob_rain
 
 
-def send_message(df, place):
+def send_message(df):
 
     client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
     message = client.messages.create(
-        body='\nHi! \n The forecast today '+ get_date() +' in '+ place +' is: \n\n ' + str(df), 
+        body='\nHi! \n The forecast today '+ get_date() +' in '+ CITY +' is: \n\n ' + str(df), 
         from_=PHONE_NUMBER,
         to= PHONE_NUMBER_TO
     ) 

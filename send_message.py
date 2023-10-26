@@ -11,12 +11,11 @@ from utils import create_df, get_forecast, send_message
 
 def main():
 
-    place = 'La Plata' 
-    data = get_forecast(place)
+    data = get_forecast()
 
     data_rain = create_df(data)
 
-    msg_id = send_message(data_rain, place)
+    msg_id = send_message(data_rain)
     print('Message sent successfully: ' + msg_id)
 
 
